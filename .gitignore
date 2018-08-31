@@ -1,0 +1,17 @@
+*~
+*.cm*
+*.o
+autom4te.cache
+configure
+config.log
+config.status
+Makefile
+*.check_mli_exists
+.depend
+.Makefile.plugin.generated
+META.*
+top/
+
+# ptests
+tests/ptests_config
+tests/*/result

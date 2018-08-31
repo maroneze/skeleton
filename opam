@@ -1,0 +1,32 @@
+opam-version: "1.2"
+name: "skeleton"
+version: "1"
+maintainer: "Mary Sue <mary@example.com>"
+authors: "Mary Sue <mary@example.com>"
+dev-repo: "https://github.com/<your-github>/skeleton.git"
+bug-reports: "https://github.com/<your-github>/skeleton/issues"
+homepage: "https://github.com/<your-github>/skeleton"
+license: "Your licence"
+
+build: [
+  ["autoconf"]
+  ["./configure" "--prefix" prefix]
+  [make "-j%{jobs}%"]
+]
+
+install: [
+  [make "install"]
+]
+
+remove: [
+  ["autoconf"]
+  ["./configure" "--prefix" prefix]
+  [make "uninstall"]
+]
+
+depends: [
+  "conf-autoconf"
+  "frama-c"
+]
+
+available: [ocaml-version >= "4.02.3"]

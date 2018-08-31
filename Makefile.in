@@ -1,0 +1,64 @@
+##########################################################################
+# License header                                                         #
+##########################################################################
+
+# Template for a Frama-C plug-in following good practices
+
+# USAGE
+# =====
+#
+# - Replace all occurrences of SKELETON/Skeleton with your plug-in's name
+# - Add the list of sources (without extension) to PLUGIN_CMO
+# - add test dirs (inside tests/) to PLUGIN_TESTS_DIRS
+#
+# See README.md for more details
+
+############################################################
+# MOST OF THE LINES BELOW REQUIRE NO CHANGES, SEE COMMENTS #
+############################################################
+
+# Do not use ?= to initialize both below variables
+# (fixed efficiency issue, see GNU Make manual, Section 8.11)
+ifndef FRAMAC_SHARE
+FRAMAC_SHARE:=$(shell frama-c-config -print-share-path)
+endif
+ifndef FRAMAC_LIBDIR
+FRAMAC_LIBDIR:=$(shell frama-c-config -print-libpath)
+endif
+
+###################
+# Plug-in Setting #
+###################
+
+PLUGIN_DIR ?=.
+PLUGIN_ENABLE:=@ENABLE_SKELETON@
+PLUGIN_NAME:=Skeleton
+
+# List of compiled modules (based on .ml files)
+PLUGIN_CMO:=options skeleton_run
+PLUGIN_DISTRIBUTED:=$(PLUGIN_ENABLE)
+PLUGIN_DISTRIB_EXTERNAL:=Makefile.in configure.ac configure
+
+# List plug-ins required/used by this plug-in, using their
+# capitalized name (e.g. Value, Callgraph, Wp, etc.), separated
+# by spaces
+PLUGIN_DEPENDENCIES:=
+
+# Test directories (excluding the tests/ prefix)
+PLUGIN_TESTS_DIRS:=skeleton
+
+include $(FRAMAC_SHARE)/Makefile.dynamic
+
+#####################################
+# Regenerating the Makefile on need #
+#####################################
+
+ifeq ("$(FRAMAC_INTERNAL)","yes")
+CONFIG_STATUS_DIR=$(FRAMAC_SRC)
+else
+CONFIG_STATUS_DIR=.
+endif
+
+$(Skeleton_DIR)/Makefile: $(Skeleton_DIR)/Makefile.in \
+                          $(CONFIG_STATUS_DIR)/config.status
+	cd $(CONFIG_STATUS_DIR) && ./config.status --file $@
